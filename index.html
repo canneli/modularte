@@ -1,0 +1,712 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Apresentação de Identidade Visual - Modularte Móveis</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@200;300;400;500;700&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Outfit', 'sans-serif'] },
+                    colors: {
+                        brand: {
+                            light: '#F4F1ED', // Off-white
+                            sand: '#D5CABD',  // Areia
+                            taupe: '#8C7D70', // Madeira
+                            dark: '#232323',  // Charcoal
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { 
+            background-color: #F4F1ED; 
+            color: #232323; 
+            scroll-behavior: smooth;
+        }
+        
+        /* Efeito Mockup 3D via CSS */
+        .perspective-container {
+            perspective: 1200px;
+        }
+        .card-3d {
+            transform: rotateY(-20deg) rotateX(10deg);
+            box-shadow: 25px 25px 40px -10px rgba(0,0,0,0.2), -10px -10px 20px rgba(255,255,255,0.6);
+            transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+            transform-style: preserve-3d;
+        }
+        .card-3d:hover {
+            transform: rotateY(-5deg) rotateX(5deg) scale(1.05) translateY(-10px);
+            box-shadow: 15px 25px 30px -10px rgba(0,0,0,0.15);
+        }
+
+        /* --- Efeito de Adesivo Descolando --- */
+        .peeling-container {
+            perspective: 1200px;
+        }
+        .sticker-peel {
+            transform-origin: top right;
+            transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.8s ease;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            transform-style: preserve-3d;
+        }
+        .peeling-group:hover .sticker-peel {
+            /* Levanta o canto inferior esquerdo rodando no eixo 3D */
+            transform: rotateX(30deg) rotateY(-25deg) rotateZ(5deg) translateZ(40px) translateX(-15px) translateY(15px);
+            box-shadow: -25px 35px 40px -10px rgba(0,0,0,0.8), inset -2px 2px 15px rgba(255,255,255,0.9);
+        }
+        /* Efeito de brilho da luz a bater na dobra do vinil */
+        .sticker-peel::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: inherit;
+            background: linear-gradient(135deg, rgba(255,255,255,0.9) 0%, rgba(255,255,255,0) 40%, rgba(0,0,0,0.05) 100%);
+            opacity: 0;
+            transition: opacity 0.8s ease;
+            pointer-events: none;
+            z-index: 10;
+        }
+        .peeling-group:hover .sticker-peel::after {
+            opacity: 1;
+        }
+
+        /* Animações Flutuantes */
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-12px); }
+            100% { transform: translateY(0px); }
+        }
+        .floating {
+            animation: float 6s ease-in-out infinite;
+        }
+        .floating-delayed {
+            animation: float 6s ease-in-out 3s infinite;
+        }
+        
+        /* Transições de Interação */
+        .interactive-element {
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s ease;
+        }
+        .interactive-element:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+
+        /* Animação de Scroll (Reveal) */
+        .reveal {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: all 1s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .svg-container svg { width: 100%; height: auto; transition: transform 0.5s ease; }
+        .interactive-element:hover .svg-container svg { transform: scale(1.05); }
+
+        /* Animação Parallax do Logotipo 3D */
+        .layer-back, .layer-conn { transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1); }
+        .group:hover .layer-back { transform: translate(3px, -3px); }
+        .group:hover .layer-conn { opacity: 0.5; }
+    </style>
+</head>
+<body class="antialiased py-12 px-6 lg:px-20 overflow-x-hidden selection:bg-brand-taupe selection:text-white">
+
+    <header class="max-w-6xl mx-auto text-center mb-24 pt-12 border-b border-brand-sand/50 pb-16 reveal active">
+        <h1 class="text-xs tracking-[0.4em] text-brand-taupe font-semibold uppercase mb-6">Apresentação de Projeto Oficial</h1>
+        <h2 class="text-5xl md:text-7xl font-light mb-10">Modularte Móveis</h2>
+        <p class="mt-6 text-brand-dark/70 font-light max-w-2xl mx-auto text-lg leading-relaxed">
+            Uma identidade desenhada pela perspetiva. "Traços Finos e Tridimensionalidade" unem-se num wireframe isométrico que projeta a precisão da arquitetura e o alto padrão dos móveis planeados.
+        </p>
+        <div class="mt-12 flex justify-center opacity-50 floating">
+            <svg class="w-6 h-6 text-brand-taupe" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path></svg>
+        </div>
+    </header>
+
+    <main class="max-w-6xl mx-auto space-y-24">
+
+        <!-- 1. Logo Principal & Adesivo 3D -->
+        <section class="reveal">
+            <h3 class="text-xl font-medium mb-8 flex items-center gap-3"><span class="w-8 h-px bg-brand-taupe"></span> 1. Logo Principal</h3>
+            
+            <!-- Logo Plana Normal -->
+            <div class="bg-white p-16 rounded-3xl shadow-sm flex flex-col items-center justify-center min-h-[350px] interactive-element group cursor-pointer border border-transparent hover:border-brand-sand/30 mb-8">
+                <div class="w-full max-w-lg svg-container">
+                    <svg viewBox="0 0 480 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        
+                        <!-- Ícone Wireframe Isométrico 3D -->
+                        <g transform="translate(0, 5)">
+                            <!-- Face Traseira (Back) -->
+                            <path d="M 40 85 V 35 L 65 60 L 90 35 V 85" stroke="#8C7D70" stroke-width="2" fill="none" stroke-linejoin="round" stroke-linecap="round" class="layer-back"/>
+                            
+                            <!-- Conectores 3D (Depth) -->
+                            <path d="M 25 100 L 40 85 M 25 50 L 40 35 M 50 75 L 65 60 M 75 50 L 90 35 M 75 100 L 90 85" stroke="#D5CABD" stroke-width="2" fill="none" stroke-linejoin="round" stroke-linecap="round" class="layer-conn"/>
+                            
+                            <!-- Face Frontal (Front) -->
+                            <path d="M 25 100 V 50 L 50 75 L 75 50 V 100" stroke="#232323" stroke-width="2.5" fill="none" stroke-linejoin="round" stroke-linecap="round"/>
+                        </g>
+
+                        <!-- Textos -->
+                        <text x="120" y="75" font-family="Outfit" font-size="48" font-weight="300" fill="#232323" letter-spacing="4">MODULARTE</text>
+                        <text x="125" y="100" font-family="Outfit" font-size="14" font-weight="400" fill="#8C7D70" letter-spacing="8">MÓVEIS PLANEJADOS</text>
+                    </svg>
+                </div>
+            </div>
+
+            <!-- Adesivo Descolando (Sub-secção) -->
+            <div class="bg-brand-dark p-12 lg:p-20 rounded-3xl shadow-inner relative overflow-hidden flex flex-col items-center justify-center min-h-[500px] peeling-group peeling-container">
+                <div class="absolute inset-0 bg-gradient-to-tr from-black/80 to-[#1a1a1a]"></div>
+                
+                <h4 class="absolute top-8 left-8 text-brand-sand/50 text-xs tracking-widest uppercase z-10 font-medium">Aplicação: Adesivo Tridimensional em Vinil</h4>
+                
+                <!-- Wrapper centralizado -->
+                <div class="relative z-10 w-full flex justify-center mt-6 cursor-pointer">
+                    
+                    <!-- Papel de Fundo (Liner do adesivo) -->
+                    <div class="absolute w-[340px] md:w-[460px] h-[140px] md:h-[180px] bg-[#111] rounded-2xl shadow-inner border border-[#333]">
+                        <div class="absolute inset-0 bg-[radial-gradient(#444_1px,transparent_1px)] [background-size:10px_10px] opacity-30"></div>
+                    </div>
+
+                    <!-- Adesivo Físico Descolando -->
+                    <div class="sticker-peel relative w-[340px] md:w-[460px] h-[140px] md:h-[180px] bg-brand-light rounded-2xl flex items-center justify-center border border-white/50 z-10 group">
+                        <!-- Logo Completo Wireframe -->
+                        <svg viewBox="0 0 480 120" class="w-10/12 relative z-20">
+                            <g transform="translate(0, 5)">
+                                <path d="M 40 85 V 35 L 65 60 L 90 35 V 85" stroke="#8C7D70" stroke-width="2" fill="none" stroke-linejoin="round" stroke-linecap="round" class="layer-back"/>
+                                <path d="M 25 100 L 40 85 M 25 50 L 40 35 M 50 75 L 65 60 M 75 50 L 90 35 M 75 100 L 90 85" stroke="#D5CABD" stroke-width="2" fill="none" stroke-linejoin="round" stroke-linecap="round" class="layer-conn"/>
+                                <path d="M 25 100 V 50 L 50 75 L 75 50 V 100" stroke="#232323" stroke-width="2.5" fill="none" stroke-linejoin="round" stroke-linecap="round"/>
+                            </g>
+                            <text x="120" y="75" font-family="Outfit" font-size="48" font-weight="300" fill="#232323" letter-spacing="4">MODULARTE</text>
+                            <text x="125" y="100" font-family="Outfit" font-size="14" font-weight="400" fill="#8C7D70" letter-spacing="8">MÓVEIS PLANEJADOS</text>
+                        </svg>
+                    </div>
+
+                </div>
+                
+                <div class="absolute bottom-8 right-8 text-brand-sand/30 text-[10px] tracking-widest uppercase z-10 animate-pulse">Passe o mouse para descolar</div>
+            </div>
+        </section>
+
+        <!-- VITRINE 3D LOGO ROTATIVO (Engine 3D Real via Canvas) -->
+        <section class="reveal">
+            <div class="w-full aspect-video md:aspect-[21/9] bg-brand-dark rounded-[2.5rem] overflow-hidden shadow-2xl relative border border-brand-sand/30 flex items-center justify-center">
+                <!-- Grid de fundo estilo "Software 3D" -->
+                <div class="absolute inset-0 bg-[radial-gradient(#8C7D70_1px,transparent_1px)] [background-size:40px_40px] opacity-10 pointer-events-none"></div>
+                <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/30 pointer-events-none"></div>
+                
+                <!-- Engine 3D Canvas (Interativo) -->
+                <canvas id="logo3dCanvas" class="absolute inset-0 w-full h-full cursor-move z-10"></canvas>
+                
+                <!-- Sombra interior forte para disfarçar as bordas e dar imersão -->
+                <div class="absolute inset-0 shadow-[inset_0_0_100px_30px_rgba(0,0,0,0.8)] pointer-events-none"></div>
+                <div class="absolute bottom-8 right-8 text-brand-sand/40 text-[10px] tracking-widest uppercase z-20 flex items-center gap-2 pointer-events-none">
+                    <span class="w-2 h-2 rounded-full bg-brand-sand animate-pulse"></span> Render 3D Interativo (Passe o mouse)
+                </div>
+            </div>
+
+            <!-- Script do Renderizador 3D Matemático -->
+            <script>
+                (function() {
+                    const canvas = document.getElementById('logo3dCanvas');
+                    const ctx = canvas.getContext('2d');
+                    let width, height, cx, cy;
+                    
+                    let currentAutoAngle = 0;
+                    let targetAngleY = 0;
+                    let targetAngleX = -0.2;
+                    let angleY = 0;
+                    let angleX = -0.2;
+                    let isHovering = false;
+
+                    function resizeCanvas() {
+                        width = canvas.parentElement.clientWidth;
+                        height = canvas.parentElement.clientHeight;
+                        const dpr = window.devicePixelRatio || 1;
+                        canvas.width = width * dpr;
+                        canvas.height = height * dpr;
+                        ctx.scale(dpr, dpr);
+                        cx = width / 2;
+                        cy = height / 2;
+                    }
+                    window.addEventListener('resize', resizeCanvas);
+
+                    canvas.addEventListener('mousemove', (e) => {
+                        isHovering = true;
+                        const rect = canvas.getBoundingClientRect();
+                        const mouseX = e.clientX - rect.left;
+                        const mouseY = e.clientY - rect.top;
+                        targetAngleY = ((mouseX / width) - 0.5) * Math.PI * 2.5; // Amplia a área de rotação
+                        targetAngleX = ((mouseY / height) - 0.5) * Math.PI;
+                    });
+
+                    canvas.addEventListener('mouseleave', () => {
+                        isHovering = false;
+                        targetAngleX = -0.2; // Volta a inclinar levemente para baixo
+                    });
+
+                    // Coordenadas matemáticas perfeitas do logo "M" em 3D
+                    const points = [
+                        {x: -25, y:  25, z:  10}, // 0: Frente Inferior Esquerda
+                        {x: -25, y: -25, z:  10}, // 1: Frente Superior Esquerda
+                        {x:   0, y:   0, z:  10}, // 2: Frente Centro (V do M)
+                        {x:  25, y: -25, z:  10}, // 3: Frente Superior Direita
+                        {x:  25, y:  25, z:  10}, // 4: Frente Inferior Direita
+                        {x: -25, y:  25, z: -10}, // 5: Costas Inferior Esquerda
+                        {x: -25, y: -25, z: -10}, // 6: Costas Superior Esquerda
+                        {x:   0, y:   0, z: -10}, // 7: Costas Centro (V do M)
+                        {x:  25, y: -25, z: -10}, // 8: Costas Superior Direita
+                        {x:  25, y:  25, z: -10}  // 9: Costas Inferior Direita
+                    ];
+
+                    const edges = [
+                        [0,1, '#F4F1ED'], [1,2, '#F4F1ED'], [2,3, '#F4F1ED'], [3,4, '#F4F1ED'], // Linhas da Frente
+                        [5,6, '#8C7D70'], [6,7, '#8C7D70'], [7,8, '#8C7D70'], [8,9, '#8C7D70'], // Linhas de Trás
+                        [0,5, '#D5CABD'], [1,6, '#D5CABD'], [2,7, '#D5CABD'], [3,8, '#D5CABD'], [4,9, '#D5CABD'] // Linhas de Profundidade
+                    ];
+
+                    function draw3D() {
+                        ctx.clearRect(0, 0, width, height);
+
+                        if (!isHovering) {
+                            currentAutoAngle += 0.006; // Velocidade de rotação automática
+                            targetAngleY = currentAutoAngle;
+                        } else {
+                            currentAutoAngle = targetAngleY; // Sincroniza quando o mouse assume o controle
+                        }
+                        
+                        angleY += (targetAngleY - angleY) * 0.1; // Suavidade na rotação
+                        angleX += (targetAngleX - angleX) * 0.1;
+
+                        const cosY = Math.cos(angleY);
+                        const sinY = Math.sin(angleY);
+                        const cosX = Math.cos(angleX);
+                        const sinX = Math.sin(angleX);
+
+                        const scale = Math.min(width, height) / 90; // Tamanho visual da estrutura
+
+                        // Motor de Projeção em Perspetiva 3D -> 2D
+                        const projected = points.map(p => {
+                            let x1 = p.x * cosY - p.z * sinY;
+                            let z1 = p.x * sinY + p.z * cosY;
+                            let y2 = p.y * cosX - z1 * sinX;
+                            let z2 = p.y * sinX + z1 * cosX;
+
+                            const fov = 350; // Campo de visão (profundidade)
+                            const zZ = fov / (fov + z2);
+
+                            return {
+                                x: cx + x1 * scale * zZ,
+                                y: cy + y2 * scale * zZ,
+                                z: z2
+                            };
+                        });
+
+                        // Ordena as linhas (Painter's Algorithm) para as que estão mais longe ficarem atrás
+                        const sortedEdges = edges.map(edge => {
+                            const p1 = projected[edge[0]];
+                            const p2 = projected[edge[1]];
+                            return { p1, p2, color: edge[2], zAvg: (p1.z + p2.z) / 2 };
+                        }).sort((a, b) => b.zAvg - a.zAvg);
+
+                        ctx.lineCap = 'round';
+                        ctx.lineJoin = 'round';
+
+                        sortedEdges.forEach(edge => {
+                            // Calcula o fade/opacidade baseado na distância (dá um aspeto de névoa brutal)
+                            const depthRatio = (edge.zAvg + 40) / 80;
+                            const opacity = Math.max(0.1, Math.min(1, 0.2 + (1 - depthRatio) * 0.8));
+
+                            ctx.lineWidth = 2.5; // Espessura do Wireframe
+                            ctx.beginPath();
+                            ctx.moveTo(edge.p1.x, edge.p1.y);
+                            ctx.lineTo(edge.p2.x, edge.p2.y);
+                            ctx.globalAlpha = opacity;
+                            ctx.strokeStyle = edge.color;
+                            ctx.stroke();
+                        });
+                        
+                        ctx.globalAlpha = 1;
+                        requestAnimationFrame(draw3D);
+                    }
+                    
+                    setTimeout(() => {
+                        resizeCanvas();
+                        draw3D();
+                    }, 50);
+                })();
+            </script>
+        </section>
+
+        <!-- 2, 3, 4: Secundária, Sublogo, Marca D'água -->
+        <section class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <!-- 2. Logotipo Secundária -->
+            <div class="reveal" style="transition-delay: 100ms;">
+                <h3 class="text-lg font-medium mb-6 flex items-center gap-3"><span class="w-6 h-px bg-brand-taupe"></span> 2. Logotipo Secundária</h3>
+                <div class="bg-brand-dark p-8 rounded-3xl shadow-sm flex items-center justify-center aspect-square interactive-element group cursor-pointer">
+                    <div class="w-36 svg-container">
+                        <svg viewBox="0 0 180 160" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <g transform="translate(40, -10)">
+                                <path d="M 45 85 V 35 L 65 55 L 85 35 V 85" stroke="#8C7D70" stroke-width="2" fill="none" stroke-linejoin="round" stroke-linecap="round" class="layer-back"/>
+                                <path d="M 30 100 L 45 85 M 30 50 L 45 35 M 50 70 L 65 55 M 70 50 L 85 35 M 70 100 L 85 85" stroke="#D5CABD" stroke-width="2" fill="none" stroke-linejoin="round" stroke-linecap="round" class="layer-conn"/>
+                                <path d="M 30 100 V 50 L 50 70 L 70 50 V 100" stroke="#F4F1ED" stroke-width="2.5" fill="none" stroke-linejoin="round" stroke-linecap="round"/>
+                            </g>
+                            <text x="90" y="125" font-family="Outfit" font-size="18" font-weight="300" fill="#F4F1ED" letter-spacing="3" text-anchor="middle">MODULARTE</text>
+                            <text x="90" y="140" font-family="Outfit" font-size="7" font-weight="400" fill="#D5CABD" letter-spacing="4" text-anchor="middle" class="group-hover:fill-brand-light transition-colors duration-500">MÓVEIS PLANEJADOS</text>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 3. Sublogo -->
+            <div class="reveal" style="transition-delay: 200ms;">
+                <h3 class="text-lg font-medium mb-6 flex items-center gap-3"><span class="w-6 h-px bg-brand-taupe"></span> 3. Sublogo</h3>
+                <div class="bg-brand-sand p-8 rounded-3xl shadow-sm flex items-center justify-center aspect-square interactive-element cursor-pointer group">
+                    <div class="w-28 svg-container relative">
+                        <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="50" cy="50" r="48" stroke="#232323" stroke-width="1" class="group-hover:stroke-brand-light transition-colors duration-500"/>
+                            <g transform="translate(5, 0)">
+                                <path d="M 40 75 V 25 L 55 45 L 70 25 V 75" stroke="#8C7D70" stroke-width="1.5" fill="none" stroke-linejoin="round" stroke-linecap="round" class="layer-back"/>
+                                <path d="M 25 90 L 40 75 M 25 40 L 40 25 M 40 60 L 55 45 M 55 40 L 70 25 M 55 90 L 70 75" stroke="#F4F1ED" stroke-width="1.5" fill="none" stroke-linejoin="round" stroke-linecap="round" class="layer-conn"/>
+                                <path d="M 25 90 V 40 L 40 60 L 55 40 V 90" stroke="#232323" stroke-width="2" fill="none" stroke-linejoin="round" stroke-linecap="round"/>
+                            </g>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 4. Marca d'água -->
+            <div class="reveal" style="transition-delay: 300ms;">
+                <h3 class="text-lg font-medium mb-6 flex items-center gap-3"><span class="w-6 h-px bg-brand-taupe"></span> 4. Marca d'água</h3>
+                <div class="bg-brand-taupe p-8 rounded-3xl shadow-sm flex items-center justify-center aspect-square relative overflow-hidden interactive-element cursor-pointer group">
+                    <img src="https://images.unsplash.com/photo-1556911220-e15b29be8c8f?auto=format&fit=crop&w=400&q=80" alt="Fundo" class="absolute inset-0 object-cover opacity-30 mix-blend-multiply w-full h-full group-hover:scale-110 transition-transform duration-1000">
+                    <div class="relative z-10 w-28 opacity-90 drop-shadow-2xl">
+                        <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <g transform="translate(5, 0)">
+                                <path d="M 40 75 V 25 L 55 45 L 70 25 V 75" stroke="#FFFFFF" stroke-opacity="0.4" stroke-width="1.5" fill="none" stroke-linejoin="round" stroke-linecap="round" class="layer-back"/>
+                                <path d="M 25 90 L 40 75 M 25 40 L 40 25 M 40 60 L 55 45 M 55 40 L 70 25 M 55 90 L 70 75" stroke="#FFFFFF" stroke-opacity="0.7" stroke-width="1.5" fill="none" stroke-linejoin="round" stroke-linecap="round" class="layer-conn"/>
+                                <path d="M 25 90 V 40 L 40 60 L 55 40 V 90" stroke="#FFFFFF" stroke-width="2" fill="none" stroke-linejoin="round" stroke-linecap="round"/>
+                            </g>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 5. Variação de cores -->
+        <section class="reveal">
+            <h3 class="text-xl font-medium mb-8 flex items-center gap-3"><span class="w-8 h-px bg-brand-taupe"></span> 5. Variações de Cores da Marca</h3>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+                <!-- Var 1 -->
+                <div class="bg-brand-light p-10 rounded-2xl flex justify-center items-center shadow-sm border border-brand-sand/30 interactive-element group">
+                    <svg class="w-20" viewBox="0 0 100 100" fill="none">
+                        <g transform="translate(5, 0)">
+                            <path d="M 40 75 V 25 L 55 45 L 70 25 V 75" stroke="#8C7D70" stroke-width="1.5" fill="none" stroke-linejoin="round" stroke-linecap="round" class="layer-back"/>
+                            <path d="M 25 90 L 40 75 M 25 40 L 40 25 M 40 60 L 55 45 M 55 40 L 70 25 M 55 90 L 70 75" stroke="#D5CABD" stroke-width="1.5" fill="none" stroke-linejoin="round" stroke-linecap="round" class="layer-conn"/>
+                            <path d="M 25 90 V 40 L 40 60 L 55 40 V 90" stroke="#232323" stroke-width="2" fill="none" stroke-linejoin="round" stroke-linecap="round"/>
+                        </g>
+                    </svg>
+                </div>
+                <!-- Var 2 -->
+                <div class="bg-brand-dark p-10 rounded-2xl flex justify-center items-center shadow-md interactive-element group" style="transition-delay: 50ms;">
+                    <svg class="w-20" viewBox="0 0 100 100" fill="none">
+                        <g transform="translate(5, 0)">
+                            <path d="M 40 75 V 25 L 55 45 L 70 25 V 75" stroke="#8C7D70" stroke-width="1.5" fill="none" stroke-linejoin="round" stroke-linecap="round" class="layer-back"/>
+                            <path d="M 25 90 L 40 75 M 25 40 L 40 25 M 40 60 L 55 45 M 55 40 L 70 25 M 55 90 L 70 75" stroke="#D5CABD" stroke-width="1.5" fill="none" stroke-linejoin="round" stroke-linecap="round" class="layer-conn"/>
+                            <path d="M 25 90 V 40 L 40 60 L 55 40 V 90" stroke="#F4F1ED" stroke-width="2" fill="none" stroke-linejoin="round" stroke-linecap="round"/>
+                        </g>
+                    </svg>
+                </div>
+                <!-- Var 3 -->
+                <div class="bg-brand-taupe p-10 rounded-2xl flex justify-center items-center shadow-md interactive-element group" style="transition-delay: 100ms;">
+                    <svg class="w-20" viewBox="0 0 100 100" fill="none">
+                        <g transform="translate(5, 0)">
+                            <path d="M 40 75 V 25 L 55 45 L 70 25 V 75" stroke="#232323" stroke-opacity="0.3" stroke-width="1.5" fill="none" stroke-linejoin="round" stroke-linecap="round" class="layer-back"/>
+                            <path d="M 25 90 L 40 75 M 25 40 L 40 25 M 40 60 L 55 45 M 55 40 L 70 25 M 55 90 L 70 75" stroke="#F4F1ED" stroke-opacity="0.5" stroke-width="1.5" fill="none" stroke-linejoin="round" stroke-linecap="round" class="layer-conn"/>
+                            <path d="M 25 90 V 40 L 40 60 L 55 40 V 90" stroke="#232323" stroke-width="2" fill="none" stroke-linejoin="round" stroke-linecap="round"/>
+                        </g>
+                    </svg>
+                </div>
+                <!-- Var 4 -->
+                <div class="bg-brand-sand p-10 rounded-2xl flex justify-center items-center shadow-sm interactive-element group" style="transition-delay: 150ms;">
+                    <svg class="w-20" viewBox="0 0 100 100" fill="none">
+                        <g transform="translate(5, 0)">
+                            <path d="M 40 75 V 25 L 55 45 L 70 25 V 75" stroke="#F4F1ED" stroke-width="1.5" fill="none" stroke-linejoin="round" stroke-linecap="round" class="layer-back"/>
+                            <path d="M 25 90 L 40 75 M 25 40 L 40 25 M 40 60 L 55 45 M 55 40 L 70 25 M 55 90 L 70 75" stroke="#8C7D70" stroke-width="1.5" fill="none" stroke-linejoin="round" stroke-linecap="round" class="layer-conn"/>
+                            <path d="M 25 90 V 40 L 40 60 L 55 40 V 90" stroke="#232323" stroke-width="2" fill="none" stroke-linejoin="round" stroke-linecap="round"/>
+                        </g>
+                    </svg>
+                </div>
+            </div>
+        </section>
+
+        <!-- 6, 7, 8: Paleta, Tipografia, Pattern -->
+        <section class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <div class="reveal">
+                <h3 class="text-lg font-medium mb-6 flex items-center gap-3"><span class="w-6 h-px bg-brand-taupe"></span> 6. Paleta de Cores</h3>
+                <div class="flex h-40 rounded-3xl overflow-hidden shadow-md interactive-element group cursor-pointer">
+                    <div class="flex-1 bg-brand-light flex items-end p-4 transition-all duration-300 hover:flex-[1.5]"><span class="text-xs tracking-widest opacity-0 group-hover:opacity-100 transition-opacity">#F4F1ED</span></div>
+                    <div class="flex-1 bg-brand-sand flex items-end p-4 transition-all duration-300 hover:flex-[1.5]"><span class="text-xs tracking-widest opacity-0 group-hover:opacity-100 transition-opacity">#D5CABD</span></div>
+                    <div class="flex-1 bg-brand-taupe flex items-end p-4 transition-all duration-300 hover:flex-[1.5]"><span class="text-xs text-white tracking-widest opacity-0 group-hover:opacity-100 transition-opacity">#8C7D70</span></div>
+                    <div class="flex-1 bg-brand-dark flex items-end p-4 transition-all duration-300 hover:flex-[1.5]"><span class="text-xs text-brand-sand tracking-widest opacity-0 group-hover:opacity-100 transition-opacity">#232323</span></div>
+                </div>
+            </div>
+            
+            <div class="reveal" style="transition-delay: 150ms;">
+                <h3 class="text-lg font-medium mb-6 flex items-center gap-3"><span class="w-6 h-px bg-brand-taupe"></span> 7. Tipografia</h3>
+                <div class="bg-white p-8 rounded-3xl shadow-sm h-40 flex flex-col justify-center interactive-element cursor-pointer group">
+                    <h4 class="text-brand-taupe text-xs uppercase tracking-widest mb-2 transition-transform group-hover:translate-x-1">Família: Outfit</h4>
+                    <div class="text-4xl font-light mb-2 transition-transform group-hover:translate-x-1">Aa Bb Cc</div>
+                    <p class="text-xs font-medium uppercase tracking-widest text-brand-dark/50 transition-transform group-hover:translate-x-1">A forma segue a função.</p>
+                </div>
+            </div>
+
+            <div class="reveal" style="transition-delay: 300ms;">
+                <h3 class="text-lg font-medium mb-6 flex items-center gap-3"><span class="w-6 h-px bg-brand-taupe"></span> 8. Pattern / Estampa</h3>
+                <div class="h-40 rounded-3xl bg-brand-taupe shadow-sm relative overflow-hidden flex items-center justify-center interactive-element group cursor-pointer" style="background-image: radial-gradient(#F4F1ED 1.5px, transparent 1.5px); background-size: 20px 20px; opacity: 0.95;">
+                    <div class="absolute inset-0 bg-brand-taupe/10 group-hover:bg-transparent transition-colors duration-500"></div>
+                    <div class="bg-brand-taupe/90 px-6 py-2 text-sm text-white uppercase tracking-[0.2em] rounded-full shadow-lg backdrop-blur-sm group-hover:scale-105 transition-transform">Textura Oficial</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 9, 10: Manual e Cartão -->
+        <section class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div class="reveal">
+                <h3 class="text-xl font-medium mb-6 flex items-center gap-3"><span class="w-8 h-px bg-brand-taupe"></span> 9. Manual da Marca</h3>
+                <div class="bg-white p-10 rounded-3xl shadow-sm flex flex-col sm:flex-row items-center gap-8 h-full border border-brand-sand/30 interactive-element group">
+                    <div class="w-24 h-36 bg-brand-dark rounded-lg shadow-2xl border-l-[6px] border-brand-taupe flex flex-col justify-center items-center p-3 relative shrink-0">
+                        <div class="absolute inset-0 bg-white/5 right-0 w-1/2 rounded-r-lg"></div>
+                        <svg viewBox="0 0 100 100" fill="none" class="w-10 h-10 mb-3 group-hover:scale-110 transition-transform">
+                            <g transform="translate(5, 0)">
+                                <path d="M 40 75 V 25 L 55 45 L 70 25 V 75" stroke="#8C7D70" stroke-width="1.5" fill="none" stroke-linejoin="round" stroke-linecap="round" class="layer-back"/>
+                                <path d="M 25 90 L 40 75 M 25 40 L 40 25 M 40 60 L 55 45 M 55 40 L 70 25 M 55 90 L 70 75" stroke="#D5CABD" stroke-width="1.5" fill="none" stroke-linejoin="round" stroke-linecap="round" class="layer-conn"/>
+                                <path d="M 25 90 V 40 L 40 60 L 55 40 V 90" stroke="#F4F1ED" stroke-width="2" fill="none" stroke-linejoin="round" stroke-linecap="round"/>
+                            </g>
+                        </svg>
+                        <div class="w-10 h-0.5 bg-brand-taupe/30 mb-1"></div>
+                        <div class="w-6 h-0.5 bg-brand-taupe/30"></div>
+                    </div>
+                    <div>
+                        <h4 class="text-xl font-medium text-brand-dark mb-2">Brand Book Digital</h4>
+                        <p class="text-sm text-brand-dark/60 leading-relaxed">Guia completo em PDF contendo todas as especificações técnicas, margens de respiro, usos incorretos e regulamentação da marca.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="reveal" style="transition-delay: 200ms;">
+                <h3 class="text-xl font-medium mb-6 flex items-center gap-3"><span class="w-8 h-px bg-brand-taupe"></span> 10. Cartão de Visitas</h3>
+                <div class="bg-brand-sand/30 p-10 rounded-3xl shadow-inner flex flex-row items-center justify-center gap-6 h-full interactive-element">
+                    <!-- Frente -->
+                    <div class="w-36 h-56 bg-brand-dark rounded-xl shadow-xl flex flex-col items-center justify-center hover:-translate-y-2 transition-transform duration-300 group">
+                        <svg viewBox="0 0 100 100" fill="none" class="w-12 h-12 mb-3">
+                            <g transform="translate(5, 0)">
+                                <path d="M 40 75 V 25 L 55 45 L 70 25 V 75" stroke="#8C7D70" stroke-width="1.5" fill="none" stroke-linejoin="round" stroke-linecap="round" class="layer-back"/>
+                                <path d="M 25 90 L 40 75 M 25 40 L 40 25 M 40 60 L 55 45 M 55 40 L 70 25 M 55 90 L 70 75" stroke="#D5CABD" stroke-width="1.5" fill="none" stroke-linejoin="round" stroke-linecap="round" class="layer-conn"/>
+                                <path d="M 25 90 V 40 L 40 60 L 55 40 V 90" stroke="#F4F1ED" stroke-width="2" fill="none" stroke-linejoin="round" stroke-linecap="round"/>
+                            </g>
+                        </svg>
+                        <div class="text-brand-light font-light tracking-[0.2em] text-[10px] text-center whitespace-nowrap">MODULARTE</div>
+                    </div>
+                    <!-- Verso -->
+                    <div class="w-36 h-56 bg-brand-light rounded-xl shadow-xl flex flex-col justify-between p-5 hover:-translate-y-2 transition-transform duration-300">
+                        <div class="text-brand-dark font-light text-[10px] tracking-widest leading-none whitespace-nowrap">MODULARTE</div>
+                        <div>
+                            <div class="text-brand-taupe font-medium text-xs mb-1">Vinícius</div>
+                            <div class="text-brand-dark/50 text-[8px] tracking-widest uppercase mb-3">Arquiteto</div>
+                            <div class="text-brand-dark text-[8px] tracking-wide">(11) 99999-9999</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 11. 2 Mockups -->
+        <section class="reveal">
+            <h3 class="text-2xl font-medium mb-10 flex items-center gap-4"><span class="w-10 h-px bg-brand-taupe"></span> 11. Aplicação em Mockups 3D</h3>
+            <div class="bg-gradient-to-br from-brand-sand/40 to-brand-sand/10 rounded-[2.5rem] p-12 lg:p-20 flex flex-col lg:flex-row justify-center items-center perspective-container gap-16 min-h-[500px]">
+                
+                <!-- Mockup: Cartões -->
+                <div class="relative w-80 h-64 flex justify-center items-center floating">
+                    <div class="card-3d bg-brand-dark w-80 h-48 rounded-xl flex flex-col items-center justify-center absolute top-0 left-0 z-20 shadow-2xl cursor-pointer group">
+                        <svg viewBox="0 0 100 100" fill="none" class="w-16 h-16 mb-4 opacity-90">
+                            <g transform="translate(5, 0)">
+                                <path d="M 40 75 V 25 L 55 45 L 70 25 V 75" stroke="#8C7D70" stroke-width="1.5" fill="none" stroke-linejoin="round" stroke-linecap="round" class="layer-back"/>
+                                <path d="M 25 90 L 40 75 M 25 40 L 40 25 M 40 60 L 55 45 M 55 40 L 70 25 M 55 90 L 70 75" stroke="#D5CABD" stroke-width="1.5" fill="none" stroke-linejoin="round" stroke-linecap="round" class="layer-conn"/>
+                                <path d="M 25 90 V 40 L 40 60 L 55 40 V 90" stroke="#F4F1ED" stroke-width="2" fill="none" stroke-linejoin="round" stroke-linecap="round"/>
+                            </g>
+                        </svg>
+                        <div class="text-brand-light font-light tracking-[0.2em] text-sm text-center whitespace-nowrap">MODULARTE</div>
+                        <div class="text-brand-taupe font-medium tracking-[0.3em] text-[6px] text-center mt-1 whitespace-nowrap">MÓVEIS PLANEJADOS</div>
+                    </div>
+                    <div class="card-3d bg-brand-light w-80 h-48 rounded-xl flex flex-col justify-between p-6 absolute top-12 left-12 z-10 shadow-xl cursor-pointer">
+                        <div class="mb-4">
+                            <div class="text-brand-dark font-light text-sm tracking-widest leading-none whitespace-nowrap">MODULARTE</div>
+                            <div class="text-brand-taupe font-medium text-[6px] tracking-[0.3em] uppercase mt-1 whitespace-nowrap">MÓVEIS PLANEJADOS</div>
+                        </div>
+                        <div>
+                            <div class="text-brand-taupe font-medium text-lg">Vinícius</div>
+                            <div class="text-brand-dark/50 text-xs tracking-widest uppercase mb-4">Arquiteto</div>
+                            <div class="text-brand-dark text-xs mb-1">@modularte.moveis</div>
+                            <div class="text-brand-dark text-xs">(11) 99999-9999</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Mockup: Smartphone -->
+                <div class="card-3d bg-brand-light w-64 h-[420px] rounded-[2.5rem] border-[12px] border-[#2C2C2C] shadow-2xl flex flex-col relative overflow-hidden z-20 mt-16 lg:mt-0 floating-delayed cursor-pointer group">
+                    <div class="absolute top-0 inset-x-0 h-6 bg-[#2C2C2C] rounded-b-2xl w-32 mx-auto z-30"></div>
+                    <div class="flex-1 bg-brand-light flex flex-col pt-8">
+                        <div class="px-6 pb-4 border-b border-brand-sand/50 flex justify-center bg-white">
+                             <div class="w-10">
+                                <svg viewBox="0 0 100 100" fill="none">
+                                    <g transform="translate(5, 0)">
+                                        <path d="M 40 75 V 25 L 55 45 L 70 25 V 75" stroke="#8C7D70" stroke-width="1.5" fill="none" stroke-linejoin="round" stroke-linecap="round" class="layer-back"/>
+                                        <path d="M 25 90 L 40 75 M 25 40 L 40 25 M 40 60 L 55 45 M 55 40 L 70 25 M 55 90 L 70 75" stroke="#D5CABD" stroke-width="1.5" fill="none" stroke-linejoin="round" stroke-linecap="round" class="layer-conn"/>
+                                        <path d="M 25 90 V 40 L 40 60 L 55 40 V 90" stroke="#232323" stroke-width="2" fill="none" stroke-linejoin="round" stroke-linecap="round"/>
+                                    </g>
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="flex-1 bg-brand-light p-4 space-y-4 relative">
+                            <div class="absolute inset-0 bg-[radial-gradient(#8C7D70_1px,transparent_1px)] [background-size:10px_10px] opacity-[0.05]"></div>
+                            <div class="w-full h-44 bg-brand-dark rounded-2xl flex items-center justify-center p-4 relative z-10 shadow-inner overflow-hidden">
+                                <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=300&q=80" alt="Sala" class="absolute inset-0 object-cover w-full h-full opacity-40 mix-blend-overlay">
+                                <div class="text-brand-light font-light text-xs tracking-[0.2em] text-center z-10">AMBIENTES<br>INTELIGENTES</div>
+                            </div>
+                            <div class="space-y-3 relative z-10 mt-6">
+                                <div class="w-3/4 h-2 bg-brand-taupe/20 rounded-full"></div>
+                                <div class="w-1/2 h-2 bg-brand-taupe/20 rounded-full"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 12. 3 Templates Feed -->
+        <section class="reveal">
+            <h3 class="text-xl font-medium mb-8 flex items-center gap-3"><span class="w-8 h-px bg-brand-taupe"></span> 12. Templates de Feed (3 Estilos)</h3>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Feed 1 -->
+                <div class="aspect-square bg-white shadow-lg rounded-2xl relative overflow-hidden border border-brand-sand/20 interactive-element group">
+                    <img src="https://images.unsplash.com/photo-1556911220-e15b29be8c8f?auto=format&fit=crop&w=500&q=80" alt="Cozinha" class="absolute inset-0 object-cover w-full h-full group-hover:scale-110 transition-transform duration-1000">
+                    <div class="absolute inset-0 bg-brand-dark/20 transition-colors"></div>
+                    <div class="absolute inset-x-0 bottom-0 p-8 bg-gradient-to-t from-brand-dark/90 via-brand-dark/60 to-transparent z-10">
+                        <div class="w-10 h-10 mb-3 border border-brand-light/40 rounded-full flex items-center justify-center text-white text-[12px] font-light backdrop-blur-sm">M</div>
+                        <h4 class="text-brand-light text-2xl font-light">Cozinhas Planeadas</h4>
+                    </div>
+                </div>
+
+                <!-- Feed 2 -->
+                <div class="aspect-square bg-brand-sand shadow-lg rounded-2xl p-10 flex flex-col justify-between border border-brand-sand/50 interactive-element">
+                    <div class="text-brand-dark font-medium tracking-[0.2em] text-xs uppercase">Dica de Decoração</div>
+                    <div>
+                        <h4 class="text-4xl font-light text-brand-dark mb-6 leading-tight">Como escolher<br>o <strong class="text-brand-taupe font-medium">MDF perfeito?</strong></h4>
+                        <div class="w-16 h-1 bg-brand-taupe rounded-full"></div>
+                    </div>
+                    <div class="flex justify-end mt-4">
+                        <div class="text-brand-dark text-[10px] font-medium tracking-widest uppercase">Modularte</div>
+                    </div>
+                </div>
+
+                <!-- Feed 3 -->
+                <div class="aspect-square bg-brand-dark shadow-lg rounded-2xl p-10 flex flex-col items-center justify-center text-center relative interactive-element overflow-hidden group">
+                    <div class="absolute inset-0 bg-[radial-gradient(#8C7D70_1px,transparent_1px)] [background-size:20px_20px] opacity-[0.03]"></div>
+                    <div class="absolute inset-6 border border-brand-taupe/20 rounded-xl group-hover:scale-95 transition-transform duration-500"></div>
+                    <div class="text-6xl text-brand-taupe mb-2 font-serif opacity-80">"</div>
+                    <h4 class="text-3xl font-light text-brand-light mb-8 leading-snug px-4 relative z-10">O design transforma o espaço.</h4>
+                    <div class="w-12 h-12 svg-container opacity-50">
+                        <svg viewBox="0 0 100 100" fill="none">
+                            <g transform="translate(5, 0)">
+                                <path d="M 40 75 V 25 L 55 45 L 70 25 V 75" stroke="#8C7D70" stroke-width="1.5" fill="none" stroke-linejoin="round" stroke-linecap="round"/>
+                                <path d="M 25 90 L 40 75 M 25 40 L 40 25 M 40 60 L 55 45 M 55 40 L 70 25 M 55 90 L 70 75" stroke="#D5CABD" stroke-width="1.5" fill="none" stroke-linejoin="round" stroke-linecap="round"/>
+                                <path d="M 25 90 V 40 L 40 60 L 55 40 V 90" stroke="#F4F1ED" stroke-width="2" fill="none" stroke-linejoin="round" stroke-linecap="round"/>
+                            </g>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 13. 3 Templates Story -->
+        <section class="reveal">
+            <h3 class="text-xl font-medium mb-8 flex items-center gap-3"><span class="w-8 h-px bg-brand-taupe"></span> 13. Templates de Story (3 Estilos)</h3>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
+                <div class="aspect-[9/16] bg-brand-dark shadow-xl rounded-3xl mx-auto w-full max-w-[280px] p-6 flex flex-col relative overflow-hidden interactive-element group">
+                    <div class="absolute top-0 right-0 w-40 h-40 bg-brand-taupe rounded-full -translate-y-20 translate-x-20 opacity-20 group-hover:scale-150 transition-transform duration-700"></div>
+                    <div class="flex items-center gap-3 mb-8 relative z-10 mt-4">
+                        <div class="w-8 h-8 border border-brand-sand rounded-full flex items-center justify-center p-1">
+                            <div class="w-full h-full bg-brand-sand rounded-full animate-pulse"></div>
+                        </div>
+                        <span class="text-brand-sand text-[10px] tracking-widest uppercase">Em andamento</span>
+                    </div>
+                    <div class="flex-1 bg-brand-light/5 rounded-2xl overflow-hidden relative shadow-inner">
+                        <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=400&q=80" alt="Sala" class="absolute inset-0 object-cover w-full h-full opacity-70 group-hover:scale-110 transition-transform duration-1000">
+                    </div>
+                </div>
+
+                <div class="aspect-[9/16] bg-brand-light shadow-xl rounded-3xl mx-auto w-full max-w-[280px] p-8 flex flex-col relative border border-brand-sand/50 interactive-element">
+                    <div class="absolute inset-0 bg-[radial-gradient(#8C7D70_1.5px,transparent_1.5px)] [background-size:15px_15px] opacity-[0.08] rounded-3xl"></div>
+                    <div class="relative z-10 flex-1 flex flex-col justify-center items-center text-center">
+                        <h4 class="text-3xl font-light text-brand-dark mb-4 leading-snug">Qual seu ambiente dos sonhos?</h4>
+                        <div class="w-full bg-white rounded-2xl shadow-lg mt-8 p-4 h-28 flex items-center justify-center text-brand-dark/30 text-sm border border-brand-sand/20 hover:shadow-xl transition-shadow cursor-pointer">
+                            [ Caixinha de Perguntas ]
+                        </div>
+                    </div>
+                </div>
+
+                <div class="aspect-[9/16] bg-brand-taupe shadow-xl rounded-3xl mx-auto w-full max-w-[280px] p-8 flex flex-col relative justify-center text-center text-white interactive-element overflow-hidden group">
+                    <div class="absolute inset-0 bg-brand-dark/10 group-hover:bg-brand-dark/0 transition-colors duration-500"></div>
+                    <div class="text-6xl mb-6 opacity-40 font-serif relative z-10 group-hover:-translate-y-2 transition-transform">"</div>
+                    <p class="text-xl font-light leading-relaxed mb-10 relative z-10">A cozinha ficou perfeita, material de primeiríssima qualidade.</p>
+                    <div class="w-12 h-1 bg-white/30 mx-auto mb-8 rounded-full relative z-10"></div>
+                    <div class="text-[10px] tracking-[0.2em] uppercase font-medium relative z-10">Cliente Satisfeito</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 14. Arquivos -->
+        <section class="reveal pb-32">
+            <h3 class="text-xl font-medium mb-8 flex items-center gap-3"><span class="w-8 h-px bg-brand-taupe"></span> 14. Fechamento de Arquivos</h3>
+            <div class="bg-white p-12 rounded-3xl shadow-sm flex flex-col sm:flex-row items-center justify-center gap-6 border border-brand-sand/30 interactive-element hover:shadow-md">
+                <span class="px-8 py-3 bg-brand-light text-brand-dark text-sm font-mono font-bold rounded-xl shadow-sm border border-brand-sand/50 hover:bg-brand-sand hover:text-white transition-colors cursor-pointer w-full sm:w-auto text-center">.PNG <span class="font-normal opacity-50 ml-2">(Alta Resolução)</span></span>
+                <span class="px-8 py-3 bg-[#E74C3C]/5 text-[#E74C3C] text-sm font-mono font-bold rounded-xl shadow-sm border border-[#E74C3C]/20 hover:bg-[#E74C3C] hover:text-white transition-colors cursor-pointer w-full sm:w-auto text-center">.PDF <span class="font-normal opacity-50 ml-2">(Impressão)</span></span>
+                <span class="px-8 py-3 bg-[#F1C40F]/5 text-[#D4AC0D] text-sm font-mono font-bold rounded-xl shadow-sm border border-[#F1C40F]/30 hover:bg-[#F1C40F] hover:text-white transition-colors cursor-pointer w-full sm:w-auto text-center">.SVG <span class="font-normal opacity-50 ml-2">(Vetor Editável)</span></span>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Scripts de Animação de Scroll -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const reveals = document.querySelectorAll('.reveal');
+
+            const revealOnScroll = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('active');
+                    }
+                });
+            }, {
+                root: null,
+                threshold: 0.1,
+                rootMargin: "0px 0px -50px 0px"
+            });
+
+            reveals.forEach(reveal => {
+                revealOnScroll.observe(reveal);
+            });
+        });
+    </script>
+</body>
+</html>
