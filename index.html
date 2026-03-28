@@ -25,12 +25,6 @@
         }
     </script>
     <style>
-        /* VARIÁVEIS DO GIROSCÓPIO - Atualizadas via JavaScript */
-        :root {
-            --px: 0;
-            --py: 0;
-        }
-
         body { 
             background-color: #F4F1ED; 
             color: #232323; 
@@ -43,95 +37,66 @@
             background: radial-gradient(circle, rgba(213,202,189,0.4) 0%, rgba(244,241,237,0) 70%);
             z-index: -1; pointer-events: none; filter: blur(60px);
             animation: pulseGlow 8s infinite alternate ease-in-out;
-            transform: translate(calc(var(--px) * -30px), calc(var(--py) * -30px));
-            transition: transform 0.1s ease-out;
         }
         .ambient-glow-2 {
             position: fixed; bottom: -20%; right: -10%; width: 60vw; height: 60vw;
             background: radial-gradient(circle, rgba(140,125,112,0.15) 0%, rgba(244,241,237,0) 70%);
             z-index: -1; pointer-events: none; filter: blur(80px);
             animation: pulseGlow 12s infinite alternate-reverse ease-in-out;
-            transform: translate(calc(var(--px) * 40px), calc(var(--py) * 40px));
-            transition: transform 0.1s ease-out;
         }
         @keyframes pulseGlow {
-            0% { opacity: 0.5; }
-            100% { opacity: 1; }
+            0% { transform: scale(1) translate(0, 0); opacity: 0.5; }
+            100% { transform: scale(1.2) translate(5%, 5%); opacity: 1; }
         }
         
-        /* --- CHIC CARDS & GLOW (Reagem à Bússola/Gyro) --- */
+        /* --- CHIC CARDS & GLOW (Efeito WOW) --- */
         .chic-card {
             position: relative;
             overflow: hidden;
+            transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
             border: 1px solid transparent;
-            /* Leve inclinação 3D baseada no celular */
-            transform: perspective(1000px) rotateY(calc(var(--px) * 6deg)) rotateX(calc(var(--py) * -6deg));
-            transition: border-color 0.6s, box-shadow 0.6s;
-            will-change: transform;
         }
         .chic-card:hover {
+            transform: translateY(-8px);
             box-shadow: 0 30px 60px -15px rgba(0, 0, 0, 0.12), 0 0 40px rgba(213, 202, 189, 0.3);
             border-color: rgba(213, 202, 189, 0.4);
         }
-        
-        /* Feixe de Luz (Shimmer) desliza quando inclina o celular */
+        /* Feixe de Luz (Shimmer) */
         .chic-card::after {
             content: '';
             position: absolute;
-            top: -50%; left: -50%;
-            width: 200%; height: 200%;
-            background: linear-gradient(
-                45deg, 
-                transparent 0%, 
-                rgba(255,255,255,0) 40%, 
-                rgba(255,255,255,0.4) 50%, 
-                rgba(255,255,255,0) 60%, 
-                transparent 100%
-            );
-            /* O movimento do feixe é amarrado à variável --px e --py */
-            transform: translate(calc(var(--px) * 70%), calc(var(--py) * 70%));
+            top: 0; left: -150%;
+            width: 100%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transform: skewX(-25deg);
+            transition: all 0.7s ease;
             z-index: 10;
             pointer-events: none;
-            will-change: transform;
+        }
+        .chic-card:hover::after {
+            left: 150%;
+            transition: all 0.7s ease;
         }
         
         .svg-glow {
-            transition: filter 0.5s ease;
+            transition: filter 0.5s ease, transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
         }
-        .chic-card:hover .svg-glow {
+        .group:hover .svg-glow {
             filter: drop-shadow(0 0 15px rgba(213, 202, 189, 0.8));
-        }
-
-        /* --- SVGs 3D ISOMÉTRICOS (Separação Dinâmica) --- */
-        /* O Logotipo separa as camadas perfeitamente acompanhando a inclinação */
-        .layer-back { 
-            transform: translate(calc(var(--px) * -12px), calc(var(--py) * -12px)); 
-        }
-        .layer-conn { 
-            transform: translate(calc(var(--px) * -2px), calc(var(--py) * -2px)); 
-        }
-        .layer-front { 
-            transform: translate(calc(var(--px) * 12px), calc(var(--py) * 12px)); 
-        }
-        .layer-back, .layer-conn, .layer-front { 
-            transition: filter 0.6s ease; 
-            will-change: transform;
+            transform: scale(1.05);
         }
         
-        /* Glow interno ao interagir */
-        .chic-card:hover .layer-back { filter: drop-shadow(0 0 5px rgba(140,125,112,0.5)); }
-        .chic-card:hover .layer-conn { opacity: 0.4; filter: drop-shadow(0 0 8px rgba(213,202,189,0.8)); }
-        .chic-card:hover .layer-front { filter: drop-shadow(0 0 10px rgba(255,255,255,0.4)); }
-
-        /* --- MOCKUPS 3D (Seção 11) REAGINDO À BÚSSOLA --- */
+        /* Efeito Mockup 3D via CSS */
         .perspective-container { perspective: 1200px; }
         .card-3d {
-            transform: perspective(1200px) rotateY(calc(-15deg + var(--px) * 35deg)) rotateX(calc(10deg + var(--py) * -35deg));
-            box-shadow: 
-                calc(15px + var(--px) * -20px) calc(25px + var(--py) * -20px) 40px -10px rgba(0,0,0,0.4), 
-                calc(-5px + var(--px) * 10px) calc(-5px + var(--py) * 10px) 20px rgba(255,255,255,0.4);
+            transform: rotateY(-20deg) rotateX(10deg);
+            box-shadow: 25px 25px 40px -10px rgba(0,0,0,0.2), -10px -10px 20px rgba(255,255,255,0.6);
+            transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
             transform-style: preserve-3d;
-            will-change: transform, box-shadow;
+        }
+        .card-3d:hover {
+            transform: rotateY(-5deg) rotateX(5deg) scale(1.05) translateY(-10px);
+            box-shadow: 15px 25px 30px -10px rgba(0,0,0,0.15), 0 0 30px rgba(213, 202, 189, 0.4);
         }
 
         /* --- Efeito de Adesivo Descolando --- */
@@ -169,20 +134,34 @@
         }
         .reveal.active { opacity: 1; transform: translateY(0); }
 
-        /* PREVENÇÃO DE ACHATAMENTO DE SVGS */
+        /* --- PREVENÇÃO DE ACHATAMENTO DE SVGS (Garante Proporção) --- */
         .svg-container {
             display: flex; align-items: center; justify-content: center;
             width: 100%; height: 100%;
         }
         .svg-container svg {
             width: 100%; height: 100%;
-            flex-shrink: 0;
+            flex-shrink: 0; /* Impede esmagamento */
         }
+
+        /* Animação Parallax do Logotipo 3D & Efeito Glow interno */
+        .layer-back, .layer-conn, .layer-front { transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1), filter 0.6s ease; }
+        .group:hover .layer-back { transform: translate(5px, -5px); filter: drop-shadow(0 0 5px rgba(140,125,112,0.5)); }
+        .group:hover .layer-conn { opacity: 0.4; filter: drop-shadow(0 0 8px rgba(213,202,189,0.8)); }
+        .group:hover .layer-front { filter: drop-shadow(0 0 10px rgba(255,255,255,0.4)); }
+        
+        @media (hover: none) and (pointer: coarse) {
+            .layer-back { animation: mobileParallaxBack 4s infinite alternate ease-in-out; }
+            .layer-conn { animation: mobileParallaxConn 4s infinite alternate ease-in-out; }
+            .layer-front { filter: drop-shadow(0 0 8px rgba(255,255,255,0.2)); }
+        }
+        @keyframes mobileParallaxBack { 0% { transform: translate(0, 0); } 100% { transform: translate(3px, -3px); } }
+        @keyframes mobileParallaxConn { 0% { opacity: 1; filter: drop-shadow(0 0 0 transparent); } 100% { opacity: 0.5; filter: drop-shadow(0 0 8px rgba(213,202,189,0.6)); } }
     </style>
 </head>
 <body class="antialiased py-12 px-6 lg:px-20 overflow-x-hidden selection:bg-brand-taupe selection:text-white relative">
 
-    <!-- Orbes Ambientais que também reagem ao Gyro -->
+    <!-- Orbes Ambientais -->
     <div class="ambient-glow-1"></div>
     <div class="ambient-glow-2"></div>
 
@@ -195,16 +174,15 @@
         <div class="mt-12 flex justify-center opacity-50 floating">
             <svg class="w-6 h-6 text-brand-taupe" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path></svg>
         </div>
-        <!-- Indicador de interação mobile -->
-        <p class="text-[10px] uppercase tracking-widest text-brand-taupe mt-4 animate-pulse md:hidden">Mova o seu celular para ver o 3D</p>
     </header>
 
     <main class="max-w-6xl mx-auto space-y-24 relative z-10">
 
-        <!-- 1. Logo Principal -->
+        <!-- 1. Logo Principal & Adesivo 3D -->
         <section class="reveal">
             <h3 class="text-xl font-medium mb-8 flex items-center gap-3"><span class="w-8 h-px bg-brand-taupe"></span> 1. Logo Principal</h3>
             
+            <!-- Logo Plana Normal -->
             <div class="bg-white p-16 rounded-3xl shadow-sm flex flex-col items-center justify-center min-h-[350px] chic-card group cursor-pointer mb-8">
                 <div class="w-full max-w-lg svg-container">
                     <svg viewBox="0 0 480 120" preserveAspectRatio="xMidYMid meet" fill="none" xmlns="http://www.w3.org/2000/svg" class="svg-glow">
@@ -222,12 +200,15 @@
             <!-- Adesivo Descolando -->
             <div class="bg-brand-dark p-8 md:p-12 lg:p-20 rounded-3xl shadow-2xl relative overflow-hidden flex flex-col items-center justify-center min-h-[400px] md:min-h-[500px] peeling-group peeling-container" onclick="this.classList.toggle('is-peeled')">
                 <div class="absolute inset-0 bg-gradient-to-tr from-black/80 to-[#1a1a1a]"></div>
+                
                 <h4 class="absolute top-6 left-6 text-brand-sand/50 text-[10px] md:text-xs tracking-widest uppercase z-10 font-medium">Aplicação: Adesivo Tridimensional em Vinil</h4>
                 
                 <div class="relative z-10 w-full flex justify-center mt-6 cursor-pointer">
+                    <!-- Liner do adesivo -->
                     <div class="absolute w-[280px] sm:w-[340px] md:w-[460px] h-[110px] sm:h-[140px] md:h-[180px] bg-[#111] rounded-2xl shadow-inner border border-[#333]">
                         <div class="absolute inset-0 bg-[radial-gradient(#444_1px,transparent_1px)] [background-size:10px_10px] opacity-30"></div>
                     </div>
+                    <!-- Adesivo Físico -->
                     <div class="sticker-peel relative w-[280px] sm:w-[340px] md:w-[460px] h-[110px] sm:h-[140px] md:h-[180px] bg-brand-light rounded-2xl flex items-center justify-center border border-white/50 z-10 group chic-card">
                         <div class="w-10/12 svg-container">
                             <svg viewBox="0 0 480 120" preserveAspectRatio="xMidYMid meet" class="relative z-20 svg-glow">
@@ -242,11 +223,12 @@
                         </div>
                     </div>
                 </div>
+                
                 <div class="absolute bottom-6 right-6 text-brand-sand/40 text-[8px] md:text-[10px] tracking-widest uppercase z-10 animate-pulse text-right">Passe o mouse ou <br class="md:hidden">toque para descolar</div>
             </div>
         </section>
 
-        <!-- VITRINE 3D LOGO ROTATIVO (Interativo) -->
+        <!-- VITRINE 3D LOGO ROTATIVO -->
         <section class="reveal">
             <div class="w-full aspect-video md:aspect-[21/9] bg-brand-dark rounded-[2.5rem] overflow-hidden shadow-2xl relative border border-brand-sand/30 flex items-center justify-center chic-card">
                 <div class="absolute inset-0 bg-[radial-gradient(#8C7D70_1px,transparent_1px)] [background-size:40px_40px] opacity-10 pointer-events-none"></div>
@@ -256,10 +238,11 @@
                 
                 <div class="absolute inset-0 shadow-[inset_0_0_100px_30px_rgba(0,0,0,0.8)] pointer-events-none"></div>
                 <div class="absolute bottom-8 right-8 text-brand-sand/50 text-[10px] tracking-widest uppercase z-20 flex items-center gap-2 pointer-events-none">
-                    <span class="w-2 h-2 rounded-full bg-brand-sand animate-pulse drop-shadow-[0_0_5px_rgba(213,202,189,1)]"></span> Render 3D Engine
+                    <span class="w-2 h-2 rounded-full bg-brand-sand animate-pulse drop-shadow-[0_0_5px_rgba(213,202,189,1)]"></span> Render 3D Engine (Interativo)
                 </div>
             </div>
 
+            <!-- Script do Renderizador 3D Matemático -->
             <script>
                 (function() {
                     const canvas = document.getElementById('logo3dCanvas');
@@ -320,18 +303,11 @@
                         ctx.clearRect(0, 0, width, height);
 
                         if (!isHovering) {
-                            // Se o Gyro estiver ativo globalmente, amarra ao Gyro
-                            if (window.globalGyroActive) {
-                                targetAngleY = window.globalGyroX * Math.PI * 1.5;
-                                targetAngleX = window.globalGyroY * Math.PI * 0.5 - 0.2;
-                            } else {
-                                currentAutoAngle += 0.005; 
-                                targetAngleY = currentAutoAngle;
-                            }
+                            currentAutoAngle += 0.005; 
+                            targetAngleY = currentAutoAngle;
                         } else {
                             currentAutoAngle = targetAngleY; 
                         }
-                        
                         angleY += (targetAngleY - angleY) * 0.1; 
                         angleX += (targetAngleX - angleX) * 0.1;
 
@@ -376,7 +352,7 @@
             </script>
         </section>
 
-        <!-- 2, 3, 4: Secundária, Sublogo, Marca D'água -->
+        <!-- 2, 3, 4: Secundária, Sublogo, Marca D'água (Desachatadas e Elegantes) -->
         <section class="grid grid-cols-1 md:grid-cols-3 gap-8">
             <div class="reveal" style="transition-delay: 100ms;">
                 <h3 class="text-lg font-medium mb-6 flex items-center gap-3"><span class="w-6 h-px bg-brand-taupe"></span> 2. Logotipo Secundária</h3>
@@ -568,18 +544,14 @@
             </div>
         </section>
 
-        <!-- 11. MOCKUPS 3D (REAGEM AO GIROSCÓPIO DO CELULAR) -->
+        <!-- 11. 2 Mockups -->
         <section class="reveal">
             <h3 class="text-2xl font-medium mb-10 flex items-center gap-4"><span class="w-10 h-px bg-brand-taupe"></span> 11. Aplicação em Mockups 3D</h3>
-            <div class="bg-gradient-to-br from-brand-sand/40 to-brand-sand/10 rounded-[2.5rem] p-8 md:p-12 lg:p-20 flex flex-col lg:flex-row justify-center items-center perspective-container gap-16 min-h-[500px] shadow-inner border border-brand-sand/30 overflow-hidden relative">
+            <div class="bg-gradient-to-br from-brand-sand/40 to-brand-sand/10 rounded-[2.5rem] p-8 md:p-12 lg:p-20 flex flex-col lg:flex-row justify-center items-center perspective-container gap-16 min-h-[500px] shadow-inner border border-brand-sand/30">
                 
-                <!-- Gyro Shimmer background da seção 3D -->
-                <div class="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.4)_0%,transparent_70%)] opacity-30 pointer-events-none transition-transform" style="transform: translate(calc(var(--px)*100%), calc(var(--py)*100%))"></div>
-
-                <!-- Mockup: Cartões -->
-                <div class="relative w-64 sm:w-80 h-64 flex justify-center items-center shrink-0">
-                    <!-- card-3d class now responds dynamically to the gyro variables -->
-                    <div class="card-3d bg-brand-dark w-64 sm:w-80 h-40 sm:h-48 rounded-xl flex flex-col items-center justify-center absolute top-0 left-0 z-20 cursor-pointer group">
+                <!-- Mockup: Cartões (Responsivo e com Glow) -->
+                <div class="relative w-64 sm:w-80 h-64 flex justify-center items-center floating shrink-0">
+                    <div class="card-3d bg-brand-dark w-64 sm:w-80 h-40 sm:h-48 rounded-xl flex flex-col items-center justify-center absolute top-0 left-0 z-20 shadow-[0_30px_50px_rgba(0,0,0,0.5)] cursor-pointer group">
                         <div class="w-full max-w-[80px] h-auto svg-container mb-2 sm:mb-4 opacity-90">
                             <svg viewBox="0 0 100 100" fill="none" preserveAspectRatio="xMidYMid meet" class="svg-glow">
                                 <g transform="translate(5, 0)">
@@ -592,7 +564,7 @@
                         <div class="text-brand-light font-light tracking-[0.2em] text-xs sm:text-sm text-center whitespace-nowrap drop-shadow-md">MODULARTE</div>
                         <div class="text-brand-taupe font-medium tracking-[0.3em] text-[5px] sm:text-[6px] text-center mt-1 whitespace-nowrap">MÓVEIS PLANEJADOS</div>
                     </div>
-                    <div class="card-3d bg-brand-light w-64 sm:w-80 h-40 sm:h-48 rounded-xl flex flex-col justify-between p-4 sm:p-6 absolute top-8 left-8 sm:top-12 sm:left-12 z-10 cursor-pointer">
+                    <div class="card-3d bg-brand-light w-64 sm:w-80 h-40 sm:h-48 rounded-xl flex flex-col justify-between p-4 sm:p-6 absolute top-8 left-8 sm:top-12 sm:left-12 z-10 shadow-xl cursor-pointer">
                         <div class="mb-4">
                             <div class="text-brand-dark font-light text-xs sm:text-sm tracking-widest leading-none whitespace-nowrap">MODULARTE</div>
                             <div class="text-brand-taupe font-medium text-[5px] sm:text-[6px] tracking-[0.3em] uppercase mt-1 whitespace-nowrap">MÓVEIS PLANEJADOS</div>
@@ -606,8 +578,8 @@
                     </div>
                 </div>
 
-                <!-- Mockup: Smartphone -->
-                <div class="card-3d bg-brand-light w-56 sm:w-64 h-[380px] sm:h-[420px] rounded-[2.5rem] border-[10px] sm:border-[12px] border-[#2C2C2C] flex flex-col relative overflow-hidden z-20 mt-8 lg:mt-0 cursor-pointer group shrink-0">
+                <!-- Mockup: Smartphone (Responsivo e com Glow) -->
+                <div class="card-3d bg-brand-light w-56 sm:w-64 h-[380px] sm:h-[420px] rounded-[2.5rem] border-[10px] sm:border-[12px] border-[#2C2C2C] shadow-[0_30px_60px_rgba(0,0,0,0.4)] flex flex-col relative overflow-hidden z-20 mt-8 lg:mt-0 floating-delayed cursor-pointer group shrink-0">
                     <div class="absolute top-0 inset-x-0 h-5 sm:h-6 bg-[#2C2C2C] rounded-b-2xl w-24 sm:w-32 mx-auto z-30 drop-shadow-md"></div>
                     <div class="flex-1 bg-brand-light flex flex-col pt-8">
                         <div class="px-6 pb-4 border-b border-brand-sand/50 flex justify-center bg-white shadow-sm relative z-20">
@@ -623,7 +595,7 @@
                         </div>
                         <div class="flex-1 bg-brand-light p-4 space-y-4 relative">
                             <div class="absolute inset-0 bg-[radial-gradient(#8C7D70_1px,transparent_1px)] [background-size:10px_10px] opacity-[0.05]"></div>
-                            <div class="w-full h-36 sm:h-44 bg-brand-dark rounded-2xl flex items-center justify-center p-4 relative z-10 shadow-inner overflow-hidden border border-white/10 transition-shadow duration-500">
+                            <div class="w-full h-36 sm:h-44 bg-brand-dark rounded-2xl flex items-center justify-center p-4 relative z-10 shadow-inner overflow-hidden border border-white/10 group-hover:shadow-[0_0_20px_rgba(140,125,112,0.4)] transition-shadow duration-500">
                                 <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=300&q=80" alt="Sala" class="absolute inset-0 object-cover w-full h-full opacity-40 mix-blend-overlay">
                                 <div class="text-brand-light font-light text-[10px] sm:text-xs tracking-[0.2em] text-center z-10 drop-shadow-lg">AMBIENTES<br>INTELIGENTES</div>
                             </div>
@@ -732,95 +704,26 @@
 
     </main>
 
-    <!-- SCRIPTS (Animação, Interseção e Giroscópio/Mouse Parallax) -->
+    <!-- Scripts de Animação de Scroll -->
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            // 1. Reveal Animations (Fade In no scroll)
             const reveals = document.querySelectorAll('.reveal');
-            const revealObserver = new IntersectionObserver((entries, observer) => {
+
+            const revealOnScroll = new IntersectionObserver((entries, observer) => {
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
                         entry.target.classList.add('active');
                     }
                 });
-            }, { root: null, threshold: 0.1, rootMargin: "0px 0px -50px 0px" });
-            reveals.forEach(reveal => revealObserver.observe(reveal));
-
-            // 2. PARALLAX ENGINE (Giroscópio Mobile + Mouse Desktop)
-            let targetPx = 0;
-            let targetPy = 0;
-            let currentPx = 0;
-            let currentPy = 0;
-            let gyroActive = false;
-
-            // Desktop (Segue o rato)
-            document.addEventListener('mousemove', (e) => {
-                if(gyroActive) return; // Se o giroscópio estiver a funcionar, ignora o rato
-                targetPx = (e.clientX / window.innerWidth - 0.5) * 2; 
-                targetPy = (e.clientY / window.innerHeight - 0.5) * 2; 
+            }, {
+                root: null,
+                threshold: 0.1,
+                rootMargin: "0px 0px -50px 0px"
             });
 
-            // Mobile (Giroscópio / Device Orientation)
-            function handleOrientation(e) {
-                if (!e.beta || !e.gamma) return;
-                gyroActive = true;
-                
-                // Beta é a inclinação para frente/trás. O normal na mão é cerca de 45 graus.
-                let beta = e.beta - 45; 
-                // Gamma é a inclinação esquerda/direita.
-                let gamma = e.gamma;
-                
-                // Limita e normaliza entre -1 e 1
-                targetPy = Math.max(-1, Math.min(1, beta / 40));
-                targetPx = Math.max(-1, Math.min(1, gamma / 40));
-            }
-
-            // A Apple obriga a pedir permissão no iOS 13+ através de uma interação (como um toque)
-            function initGyroscope() {
-                if (window.gyroInitialized) return;
-                
-                if (typeof DeviceOrientationEvent !== 'undefined' && typeof DeviceOrientationEvent.requestPermission === 'function') {
-                    DeviceOrientationEvent.requestPermission()
-                        .then(permissionState => {
-                            if (permissionState === 'granted') {
-                                window.addEventListener('deviceorientation', handleOrientation);
-                                window.globalGyroActive = true;
-                            }
-                        })
-                        .catch(console.error);
-                } else {
-                    window.addEventListener('deviceorientation', handleOrientation);
-                    window.globalGyroActive = true;
-                }
-                window.gyroInitialized = true;
-            }
-            
-            // Oculta o aviso de telemóvel quando toca na tela
-            document.addEventListener('touchstart', () => {
-                initGyroscope();
-                document.querySelectorAll('.animate-pulse').forEach(el => {
-                    if(el.innerText.includes('Mova o seu celular')) el.style.display = 'none';
-                });
-            }, {once: true});
-            document.addEventListener('click', initGyroscope, {once: true});
-
-            // Render Loop Suave (Interpolação de movimento)
-            function renderParallax() {
-                // Suaviza a transição (easing)
-                currentPx += (targetPx - currentPx) * 0.08;
-                currentPy += (targetPy - currentPy) * 0.08;
-                
-                // Alimenta o CSS com as coordenadas
-                document.documentElement.style.setProperty('--px', currentPx);
-                document.documentElement.style.setProperty('--py', currentPy);
-                
-                // Para comunicar com o Canvas 3D
-                window.globalGyroX = currentPx;
-                window.globalGyroY = currentPy;
-                
-                requestAnimationFrame(renderParallax);
-            }
-            renderParallax();
+            reveals.forEach(reveal => {
+                revealOnScroll.observe(reveal);
+            });
         });
     </script>
 </body>
