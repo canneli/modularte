@@ -61,6 +61,11 @@
             transform: rotateX(30deg) rotateY(-25deg) rotateZ(5deg) translateZ(40px) translateX(-15px) translateY(15px);
             box-shadow: -25px 35px 40px -10px rgba(0,0,0,0.8), inset -2px 2px 15px rgba(255,255,255,0.9);
         }
+        /* Suporte a clique/toque no mobile para o adesivo */
+        .peeling-group.is-peeled .sticker-peel {
+            transform: rotateX(30deg) rotateY(-25deg) rotateZ(5deg) translateZ(40px) translateX(-15px) translateY(15px);
+            box-shadow: -25px 35px 40px -10px rgba(0,0,0,0.8), inset -2px 2px 15px rgba(255,255,255,0.9);
+        }
         /* Efeito de brilho da luz a bater na dobra do vinil */
         .sticker-peel::after {
             content: '';
@@ -74,6 +79,9 @@
             z-index: 10;
         }
         .peeling-group:hover .sticker-peel::after {
+            opacity: 1;
+        }
+        .peeling-group.is-peeled .sticker-peel::after {
             opacity: 1;
         }
 
@@ -117,6 +125,24 @@
         .layer-back, .layer-conn { transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1); }
         .group:hover .layer-back { transform: translate(3px, -3px); }
         .group:hover .layer-conn { opacity: 0.5; }
+        
+        /* Animações automáticas de profundidade para dispositivos touch (Mobile) */
+        @media (hover: none) and (pointer: coarse) {
+            .layer-back { animation: mobileParallaxBack 3s infinite alternate ease-in-out; }
+            .layer-conn { animation: mobileParallaxConn 3s infinite alternate ease-in-out; }
+        }
+        @keyframes mobileParallaxBack {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(2px, -2px); }
+        }
+        @keyframes mobileParallaxConn {
+            0% { opacity: 1; }
+            100% { opacity: 0.6; }
+        }
+
+        /* Previne o achatamento de SVGs globalmente */
+        svg { flex-shrink: 0; }
+        .svg-container svg { width: 100%; height: auto; max-height: 100%; transition: transform 0.5s ease; }
     </style>
 </head>
 <body class="antialiased py-12 px-6 lg:px-20 overflow-x-hidden selection:bg-brand-taupe selection:text-white">
@@ -162,24 +188,24 @@
                 </div>
             </div>
 
-            <!-- Adesivo Descolando (Sub-secção) -->
-            <div class="bg-brand-dark p-12 lg:p-20 rounded-3xl shadow-inner relative overflow-hidden flex flex-col items-center justify-center min-h-[500px] peeling-group peeling-container">
+            <!-- Adesivo Descolando (Tornado Responsivo e Clicável) -->
+            <div class="bg-brand-dark p-8 md:p-12 lg:p-20 rounded-3xl shadow-inner relative overflow-hidden flex flex-col items-center justify-center min-h-[400px] md:min-h-[500px] peeling-group peeling-container" onclick="this.classList.toggle('is-peeled')">
                 <div class="absolute inset-0 bg-gradient-to-tr from-black/80 to-[#1a1a1a]"></div>
                 
-                <h4 class="absolute top-8 left-8 text-brand-sand/50 text-xs tracking-widest uppercase z-10 font-medium">Aplicação: Adesivo Tridimensional em Vinil</h4>
+                <h4 class="absolute top-6 left-6 text-brand-sand/50 text-[10px] md:text-xs tracking-widest uppercase z-10 font-medium">Aplicação: Adesivo Tridimensional em Vinil</h4>
                 
                 <!-- Wrapper centralizado -->
                 <div class="relative z-10 w-full flex justify-center mt-6 cursor-pointer">
                     
                     <!-- Papel de Fundo (Liner do adesivo) -->
-                    <div class="absolute w-[340px] md:w-[460px] h-[140px] md:h-[180px] bg-[#111] rounded-2xl shadow-inner border border-[#333]">
+                    <div class="absolute w-[280px] sm:w-[340px] md:w-[460px] h-[110px] sm:h-[140px] md:h-[180px] bg-[#111] rounded-2xl shadow-inner border border-[#333]">
                         <div class="absolute inset-0 bg-[radial-gradient(#444_1px,transparent_1px)] [background-size:10px_10px] opacity-30"></div>
                     </div>
 
                     <!-- Adesivo Físico Descolando -->
-                    <div class="sticker-peel relative w-[340px] md:w-[460px] h-[140px] md:h-[180px] bg-brand-light rounded-2xl flex items-center justify-center border border-white/50 z-10 group">
-                        <!-- Logo Completo Wireframe -->
-                        <svg viewBox="0 0 480 120" class="w-10/12 relative z-20">
+                    <div class="sticker-peel relative w-[280px] sm:w-[340px] md:w-[460px] h-[110px] sm:h-[140px] md:h-[180px] bg-brand-light rounded-2xl flex items-center justify-center border border-white/50 z-10 group">
+                        <!-- Logo Completo Wireframe (protegido contra achatamento) -->
+                        <svg viewBox="0 0 480 120" preserveAspectRatio="xMidYMid meet" class="w-10/12 relative z-20">
                             <g transform="translate(0, 5)">
                                 <path d="M 40 85 V 35 L 65 60 L 90 35 V 85" stroke="#8C7D70" stroke-width="2" fill="none" stroke-linejoin="round" stroke-linecap="round" class="layer-back"/>
                                 <path d="M 25 100 L 40 85 M 25 50 L 40 35 M 50 75 L 65 60 M 75 50 L 90 35 M 75 100 L 90 85" stroke="#D5CABD" stroke-width="2" fill="none" stroke-linejoin="round" stroke-linecap="round" class="layer-conn"/>
@@ -192,11 +218,11 @@
 
                 </div>
                 
-                <div class="absolute bottom-8 right-8 text-brand-sand/30 text-[10px] tracking-widest uppercase z-10 animate-pulse">Passe o mouse para descolar</div>
+                <div class="absolute bottom-6 right-6 text-brand-sand/30 text-[8px] md:text-[10px] tracking-widest uppercase z-10 animate-pulse text-right">Passe o mouse ou <br class="md:hidden">toque para descolar</div>
             </div>
         </section>
 
-        <!-- VITRINE 3D LOGO ROTATIVO (Engine 3D Real via Canvas) -->
+        <!-- VITRINE 3D LOGO ROTATIVO -->
         <section class="reveal">
             <div class="w-full aspect-video md:aspect-[21/9] bg-brand-dark rounded-[2.5rem] overflow-hidden shadow-2xl relative border border-brand-sand/30 flex items-center justify-center">
                 <!-- Grid de fundo estilo "Software 3D" -->
@@ -209,7 +235,7 @@
                 <!-- Sombra interior forte para disfarçar as bordas e dar imersão -->
                 <div class="absolute inset-0 shadow-[inset_0_0_100px_30px_rgba(0,0,0,0.8)] pointer-events-none"></div>
                 <div class="absolute bottom-8 right-8 text-brand-sand/40 text-[10px] tracking-widest uppercase z-20 flex items-center gap-2 pointer-events-none">
-                    <span class="w-2 h-2 rounded-full bg-brand-sand animate-pulse"></span> Render 3D Interativo (Passe o mouse)
+                    <span class="w-2 h-2 rounded-full bg-brand-sand animate-pulse"></span> Render 3D (Arraste p/ girar)
                 </div>
             </div>
 
@@ -239,18 +265,36 @@
                     }
                     window.addEventListener('resize', resizeCanvas);
 
+                    // Suporte a Mouse (Desktop)
                     canvas.addEventListener('mousemove', (e) => {
                         isHovering = true;
                         const rect = canvas.getBoundingClientRect();
                         const mouseX = e.clientX - rect.left;
                         const mouseY = e.clientY - rect.top;
-                        targetAngleY = ((mouseX / width) - 0.5) * Math.PI * 2.5; // Amplia a área de rotação
+                        targetAngleY = ((mouseX / width) - 0.5) * Math.PI * 2.5;
                         targetAngleX = ((mouseY / height) - 0.5) * Math.PI;
                     });
 
                     canvas.addEventListener('mouseleave', () => {
                         isHovering = false;
-                        targetAngleX = -0.2; // Volta a inclinar levemente para baixo
+                        targetAngleX = -0.2;
+                    });
+
+                    // Suporte a Touch (Mobile)
+                    canvas.addEventListener('touchmove', (e) => {
+                        isHovering = true;
+                        const rect = canvas.getBoundingClientRect();
+                        const touch = e.touches[0];
+                        const mouseX = touch.clientX - rect.left;
+                        const mouseY = touch.clientY - rect.top;
+                        targetAngleY = ((mouseX / width) - 0.5) * Math.PI * 2.5; 
+                        targetAngleX = ((mouseY / height) - 0.5) * Math.PI;
+                        e.preventDefault(); // Previne o ecrã de deslizar para baixo ao girar a logo
+                    }, { passive: false });
+
+                    canvas.addEventListener('touchend', () => {
+                        isHovering = false;
+                        targetAngleX = -0.2;
                     });
 
                     // Coordenadas matemáticas perfeitas do logo "M" em 3D
@@ -532,48 +576,55 @@
         <!-- 11. 2 Mockups -->
         <section class="reveal">
             <h3 class="text-2xl font-medium mb-10 flex items-center gap-4"><span class="w-10 h-px bg-brand-taupe"></span> 11. Aplicação em Mockups 3D</h3>
-            <div class="bg-gradient-to-br from-brand-sand/40 to-brand-sand/10 rounded-[2.5rem] p-12 lg:p-20 flex flex-col lg:flex-row justify-center items-center perspective-container gap-16 min-h-[500px]">
+            <div class="bg-gradient-to-br from-brand-sand/40 to-brand-sand/10 rounded-[2.5rem] p-8 md:p-12 lg:p-20 flex flex-col lg:flex-row justify-center items-center perspective-container gap-16 min-h-[500px]">
                 
-                <!-- Mockup: Cartões -->
-                <div class="relative w-80 h-64 flex justify-center items-center floating">
-                    <div class="card-3d bg-brand-dark w-80 h-48 rounded-xl flex flex-col items-center justify-center absolute top-0 left-0 z-20 shadow-2xl cursor-pointer group">
-                        <svg viewBox="0 0 100 100" fill="none" class="w-16 h-16 mb-4 opacity-90">
+                <!-- Mockup: Cartões (Responsivo Mobile) -->
+                <div class="relative w-64 sm:w-80 h-64 flex justify-center items-center floating shrink-0">
+                    <div class="card-3d bg-brand-dark w-64 sm:w-80 h-40 sm:h-48 rounded-xl flex flex-col items-center justify-center absolute top-0 left-0 z-20 shadow-2xl cursor-pointer group">
+                        <svg viewBox="0 0 100 100" fill="none" preserveAspectRatio="xMidYMid meet" class="w-12 h-12 sm:w-16 sm:h-16 mb-2 sm:mb-4 opacity-90">
                             <g transform="translate(5, 0)">
                                 <path d="M 40 75 V 25 L 55 45 L 70 25 V 75" stroke="#8C7D70" stroke-width="1.5" fill="none" stroke-linejoin="round" stroke-linecap="round" class="layer-back"/>
                                 <path d="M 25 90 L 40 75 M 25 40 L 40 25 M 40 60 L 55 45 M 55 40 L 70 25 M 55 90 L 70 75" stroke="#D5CABD" stroke-width="1.5" fill="none" stroke-linejoin="round" stroke-linecap="round" class="layer-conn"/>
                                 <path d="M 25 90 V 40 L 40 60 L 55 40 V 90" stroke="#F4F1ED" stroke-width="2" fill="none" stroke-linejoin="round" stroke-linecap="round"/>
                             </g>
                         </svg>
-                        <div class="text-brand-light font-light tracking-[0.2em] text-sm text-center whitespace-nowrap">MODULARTE</div>
-                        <div class="text-brand-taupe font-medium tracking-[0.3em] text-[6px] text-center mt-1 whitespace-nowrap">MÓVEIS PLANEJADOS</div>
+                        <div class="text-brand-light font-light tracking-[0.2em] text-xs sm:text-sm text-center whitespace-nowrap">MODULARTE</div>
+                        <div class="text-brand-taupe font-medium tracking-[0.3em] text-[5px] sm:text-[6px] text-center mt-1 whitespace-nowrap">MÓVEIS PLANEJADOS</div>
                     </div>
-                    <div class="card-3d bg-brand-light w-80 h-48 rounded-xl flex flex-col justify-between p-6 absolute top-12 left-12 z-10 shadow-xl cursor-pointer">
+                    <div class="card-3d bg-brand-light w-64 sm:w-80 h-40 sm:h-48 rounded-xl flex flex-col justify-between p-4 sm:p-6 absolute top-8 left-8 sm:top-12 sm:left-12 z-10 shadow-xl cursor-pointer">
                         <div class="mb-4">
-                            <div class="text-brand-dark font-light text-sm tracking-widest leading-none whitespace-nowrap">MODULARTE</div>
-                            <div class="text-brand-taupe font-medium text-[6px] tracking-[0.3em] uppercase mt-1 whitespace-nowrap">MÓVEIS PLANEJADOS</div>
+                            <div class="text-brand-dark font-light text-xs sm:text-sm tracking-widest leading-none whitespace-nowrap">MODULARTE</div>
+                            <div class="text-brand-taupe font-medium text-[5px] sm:text-[6px] tracking-[0.3em] uppercase mt-1 whitespace-nowrap">MÓVEIS PLANEJADOS</div>
                         </div>
                         <div>
-                            <div class="text-brand-taupe font-medium text-lg">Vinícius</div>
-                            <div class="text-brand-dark/50 text-xs tracking-widest uppercase mb-4">Arquiteto</div>
-                            <div class="text-brand-dark text-xs mb-1">@modularte.moveis</div>
-                            <div class="text-brand-dark text-xs">(11) 99999-9999</div>
+                            <div class="text-brand-taupe font-medium text-base sm:text-lg">Vinícius</div>
+                            <div class="text-brand-dark/50 text-[10px] sm:text-xs tracking-widest uppercase mb-2 sm:mb-4">Arquiteto</div>
+                            <div class="text-brand-dark text-[10px] sm:text-xs mb-1">@modularte.moveis</div>
+                            <div class="text-brand-dark text-[10px] sm:text-xs">(11) 99999-9999</div>
                         </div>
                     </div>
                 </div>
 
-                <!-- Mockup: Smartphone -->
-                <div class="card-3d bg-brand-light w-64 h-[420px] rounded-[2.5rem] border-[12px] border-[#2C2C2C] shadow-2xl flex flex-col relative overflow-hidden z-20 mt-16 lg:mt-0 floating-delayed cursor-pointer group">
-                    <div class="absolute top-0 inset-x-0 h-6 bg-[#2C2C2C] rounded-b-2xl w-32 mx-auto z-30"></div>
+                <!-- Mockup: Smartphone (Responsivo Mobile) -->
+                <div class="card-3d bg-brand-light w-56 sm:w-64 h-[380px] sm:h-[420px] rounded-[2.5rem] border-[10px] sm:border-[12px] border-[#2C2C2C] shadow-2xl flex flex-col relative overflow-hidden z-20 mt-8 lg:mt-0 floating-delayed cursor-pointer group shrink-0">
+                    <div class="absolute top-0 inset-x-0 h-5 sm:h-6 bg-[#2C2C2C] rounded-b-2xl w-24 sm:w-32 mx-auto z-30"></div>
                     <div class="flex-1 bg-brand-light flex flex-col pt-8">
                         <div class="px-6 pb-4 border-b border-brand-sand/50 flex justify-center bg-white">
-                             <div class="w-10">
-                                <svg viewBox="0 0 100 100" fill="none">
+                             <div class="w-8 sm:w-10">
+                                <svg viewBox="0 0 100 100" fill="none" preserveAspectRatio="xMidYMid meet">
                                     <g transform="translate(5, 0)">
                                         <path d="M 40 75 V 25 L 55 45 L 70 25 V 75" stroke="#8C7D70" stroke-width="1.5" fill="none" stroke-linejoin="round" stroke-linecap="round" class="layer-back"/>
                                         <path d="M 25 90 L 40 75 M 25 40 L 40 25 M 40 60 L 55 45 M 55 40 L 70 25 M 55 90 L 70 75" stroke="#D5CABD" stroke-width="1.5" fill="none" stroke-linejoin="round" stroke-linecap="round" class="layer-conn"/>
                                         <path d="M 25 90 V 40 L 40 60 L 55 40 V 90" stroke="#232323" stroke-width="2" fill="none" stroke-linejoin="round" stroke-linecap="round"/>
                                     </g>
                                 </svg>
+                            </div>
+                        </div>
+                        <div class="flex-1 bg-brand-light p-4 space-y-4 relative">
+                            <div class="absolute inset-0 bg-[radial-gradient(#8C7D70_1px,transparent_1px)] [background-size:10px_10px] opacity-[0.05]"></div>
+                            <div class="w-full h-36 sm:h-44 bg-brand-dark rounded-2xl flex items-center justify-center p-4 relative z-10 shadow-inner overflow-hidden">
+                                <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=300&q=80" alt="Sala" class="absolute inset-0 object-cover w-full h-full opacity-40 mix-blend-overlay">
+                                <div class="text-brand-light font-light text-[10px] sm:text-xs tracking-[0.2em] text-center z-10">AMBIENTES<br>INTELIGENTES</div>
                             </div>
                         </div>
                         <div class="flex-1 bg-brand-light p-4 space-y-4 relative">
